@@ -1,0 +1,8 @@
+load("@wpi_bazel_rules//rules/gen:gen-version-file.bzl", "generate_version_file")
+
+generate_version_file(
+    name = "generate-version",
+    output_file = "WPILibVersion.cpp",
+    template = "WPILibVersion.cpp.in",
+    visibility = ["//visibility:public"],
+)

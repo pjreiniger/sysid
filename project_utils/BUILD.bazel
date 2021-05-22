@@ -1,0 +1,25 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "wpilib_cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+wpilib_cc_library(
+    name = "logging",
+    srcs = glob(["cpp/logging/*.cpp"]),
+    hdrs = glob(["include/logging/*.h"]),
+    raw_deps = [
+        "@local_allwpilib//:wpilibc-deps",
+    ],
+    strip_include_prefix = "include",
+)
+
+wpilib_cc_library(
+    name = "generation",
+    srcs = glob(["cpp/generation/*.cpp"]),
+    hdrs = glob(["include/generation/*.h"]),
+    raw_deps = [
+        "@local_ctre//:ctre-cpp",
+        "@local_rev//:rev-cpp",
+        "@local_allwpilib//:wpilibc-deps",
+    ],
+    strip_include_prefix = "include",
+)

@@ -1,0 +1,22 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "wpilib_cc_library", "wpilib_cc_test")
+
+wpilib_cc_library(
+    name = "GeneralMechanism",
+    srcs = glob(["src/main/cpp/**/*.cpp"]),
+    hdrs = glob(["src/main/include/**/*.h"]),
+    raw_deps = [
+        "@ctre_bazel_rules//:ctre",
+        "@rev_bazel_rules//:rev",
+        "//project_utils:logging",
+        "//project_utils:generation",
+    ],
+    strip_include_prefix = "src/main/include",
+)
+
+wpilib_cc_test(
+    name = "GeneralMechanism-test",
+    srcs = glob(["src/test/cpp/**/*.cpp"]),
+    raw_deps = [
+        ":GeneralMechanism",
+    ],
+)

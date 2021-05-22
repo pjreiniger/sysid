@@ -1,0 +1,9 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "wpilib_cc_test")
+
+wpilib_cc_test(
+    name = "sysid-analysis-test",
+    srcs = ["Main.cpp"] + glob(["analysis/*.cpp"]),
+    raw_deps = [
+        "//src/main/native:analysis",
+    ],
+)

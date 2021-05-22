@@ -1,0 +1,11 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "wpilib_cc_test")
+
+wpilib_cc_test(
+    name = "integrationtest_analysis",
+    srcs = glob(["*.cpp"]),
+    raw_deps = [
+        "//src/main/native:analysis",
+        "//src/main/native:telemetry",
+    ],
+    tags = ["manual"],
+)

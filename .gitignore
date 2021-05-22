@@ -299,3 +299,6 @@ base_projects/Drivetrain/src/main/deploy/config.json
 # Generated gradle files
 base_projects/GeneralMechanism/build.gradle
 base_projects/Drivetrain/build.gradle
+
+bazel-*
+.ijwb/ 

@@ -1,0 +1,11 @@
+load("@wpi_bazel_deps//rules:wpilibc_robot.bzl", "wpilibc_robot")
+
+wpilibc_robot(
+    name = "integration_test_project",
+    non_wpi_deps = [
+        "@ctre_bazel_rules//:ctre",
+        "@rev_bazel_rules//:rev",
+        "//project_utils:logging",
+        "//project_utils:generation",
+    ],
+)

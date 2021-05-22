@@ -1,0 +1,82 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "get_wpigui_linker_flags", "wpilib_cc_binary", "wpilib_cc_library")
+load("@wpi_bazel_rules//rules/gen:gen-resources.bzl", "generate_resources")
+
+package(default_visibility = ["//visibility:public"])
+
+wpilib_cc_library(
+    name = "util",
+    srcs = ["cpp/Util.cpp"],
+    hdrs = ["include/sysid/Util.h"],
+    raw_deps = [
+        "@local_imgui//:imgui",
+    ],
+    strip_include_prefix = "include",
+)
+
+wpilib_cc_library(
+    name = "analysis",
+    srcs = glob(["cpp/analysis/*.cpp"]),
+    hdrs = glob(["include/sysid/analysis/*.h"]),
+    raw_deps = [
+        ":util",
+        "@local_allwpilib//:wpimath-cpp",
+        "@local_allwpilib//:wpiutil-cpp",
+    ],
+    strip_include_prefix = "include",
+)
+
+wpilib_cc_library(
+    name = "generation",
+    srcs = glob(["cpp/generation/*.cpp"]),
+    hdrs = glob(["include/sysid/generation/*.h"]),
+    raw_deps = [
+        ":util",
+        "@local_allwpilib//:wpiutil-cpp",
+    ],
+    strip_include_prefix = "include",
+)
+
+wpilib_cc_library(
+    name = "telemetry",
+    srcs = glob(["cpp/telemetry/*.cpp"]),
+    hdrs = glob(["include/sysid/telemetry/*.h"]),
+    raw_deps = [
+        ":analysis",
+        "@local_allwpilib//:ntcore-cpp",
+    ],
+    strip_include_prefix = "include",
+)
+
+wpilib_cc_library(
+    name = "view",
+    srcs = glob(["cpp/view/*.cpp"]),
+    hdrs = glob(["include/sysid/view/*.h"]),
+    raw_deps = [
+        ":telemetry",
+        ":generation",
+        "@local_allwpilib//:wpigui-cpp",
+        "@local_allwpilib//:libglass",
+        "@local_allwpilib//:libglassnt",
+    ],
+    strip_include_prefix = "include",
+)
+
+generate_resources(
+    name = "generate-resources",
+    namespace = "sysid",
+    prefix = "SYSID",
+    resource_files = glob(["resources/*"]),
+)
+
+wpilib_cc_binary(
+    name = "sysid",
+    srcs = [
+        "cpp/Main.cpp",
+        ":generate-resources",
+        "//src/generate:generate-version",
+    ],
+    linkopts = get_wpigui_linker_flags(console = False),
+    raw_deps = [
+        ":view",
+    ],
+)

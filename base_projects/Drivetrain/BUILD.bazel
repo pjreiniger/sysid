@@ -1,0 +1,27 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "wpilib_cc_test")
+load("@wpi_bazel_deps//rules:wpilibc_robot.bzl", "wpilibc_robot")
+
+halsim_projects_info = {}
+
+halsim_projects_info["gui"] = ["@local_allwpilib//:halsim_gui"]
+
+halsim_projects_info["ws_server"] = ["@local_allwpilib//:halsim_ws_server"]
+
+wpilibc_robot(
+    name = "Drivetrain",
+    halsim_projects_info = halsim_projects_info,
+    non_wpi_deps = [
+        "@local_ctre//:ctre-cpp",
+        "@local_rev//:rev-cpp",
+        "//project_utils:logging",
+        "//project_utils:generation",
+    ],
+)
+
+wpilib_cc_test(
+    name = "Drivetrain-test",
+    srcs = glob(["src/test/cpp/**/*.cpp"]),
+    raw_deps = [
+        ":lib",
+    ],
+)
